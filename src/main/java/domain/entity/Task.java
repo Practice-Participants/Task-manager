@@ -3,7 +3,6 @@ package domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.time.LocalDateTime;
 
 
@@ -16,14 +15,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "task")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private String textTask;
-    private LocalDateTime createTime;
+    private Long reporterID;
+    private Long assigneeID;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime deadline;
+    private TaskStatus status;
+    private TaskPriority priority;
+    private String tag;
+
 }
