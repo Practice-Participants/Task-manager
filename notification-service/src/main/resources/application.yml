@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: notification-service
+  datasource:
+    username: notification
+    password: notification-pwd
+    url: jdbc:postgresql://localhost:5432/notification-db
+  kafka:
+    bootstrap-servers: localhost:9092
+  jpa:
+    hibernate:
+      ddl-auto: update
