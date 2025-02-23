@@ -27,7 +27,9 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deadline;
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
+    @Enumerated(EnumType.STRING)
     private TaskPriority priority;
     private String tag;
 

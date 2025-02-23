@@ -1,6 +1,8 @@
 spring:
   application:
     name: domain
+  kafka:
+    bootstrap-servers: localhost:9092
   jpa:
     hibernate:
       ddl-auto: update

@@ -22,5 +22,4 @@ public class TaskDto {
     private String description;
     private LocalDateTime deadline;
     private String tag;
-    private TaskPriority priority;
 }

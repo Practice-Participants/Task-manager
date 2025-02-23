@@ -5,14 +5,15 @@ import domain.entity.Task;
 import domain.entity.TaskStatus;
 import domain.exception.NoTaskException;
 import domain.mapper.TaskMapper;
+import domain.model.TaskModel;
 import domain.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * Created by Lorden on 19.02.2025
@@ -23,33 +24,42 @@ import java.util.Optional;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper mapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Transactional
-    public Task creteTask(TaskDto dto){
+    public Task creteTask(TaskDto dto) {
         Task task = mapper.toTask(dto);
-        task.setCreatedAt(LocalDateTime.now());
-        task.setUpdatedAt(LocalDateTime.now());
-        task.setStatus(TaskStatus.TO_DO);
+        taskRepository.save(task);
+        log.info("Create task, ID:" + task.getId());
+        kafkaTemplate.send("task-event",String.format("Task created with ID: %s", task.getId()) );
         return task;
     }
 
-    public Task updateTask(TaskDto dto, Long id){
+    public Task updateTask(TaskModel model, Long id) {
         Task task = taskRepository.findById(id).orElseThrow(NoTaskException::new);
-        Task intermediateEntry = mapper.toTask(dto);
+        Task updateTask = mapper.toTask(model);
 
-        intermediateEntry.setId(task.getId());
-        task.setCreatedAt(task.getCreatedAt());
-        task.setUpdatedAt(task.getUpdatedAt());
-        task.setStatus(task.getStatus());
+        updateTask.setId(task.getId());
+        updateTask.setReporterID(task.getReporterID());
+        updateTask.setCreatedAt(task.getCreatedAt());
+        updateTask.setUpdatedAt(LocalDateTime.now());
+        updateTask.setDeadline(task.getDeadline());
+        updateTask.setStatus(task.getStatus());
 
-        return taskRepository.save(intermediateEntry);
+        log.info("Update task, ID:" + updateTask.getId());
+        kafkaTemplate.send("task-event",String.format("Update task with ID: %s", updateTask.getId()) );
+
+        return taskRepository.save(updateTask);
     }
 
     public void deleteTask(Long id) {
+        log.info("Update task, ID:" + id);
+        kafkaTemplate.send("task-event",String.format("Delete task with ID: %s", id) );
+
         taskRepository.deleteById(id);
     }
 
-    public Task findById(Long id){
+    public Task findById(Long id) {
         return taskRepository.findById(id).orElseThrow(NoTaskException::new);
     }
 

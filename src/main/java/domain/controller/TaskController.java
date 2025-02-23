@@ -3,6 +3,7 @@ package domain.controller;
 import domain.dto.TaskDto;
 import domain.entity.Task;
 import domain.mapper.TaskMapper;
+import domain.model.TaskModel;
 import domain.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,9 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public TaskDto updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
-        Task task =taskService.updateTask(taskDto, id);
-        return mapper.toDto(task);
+    public TaskModel updateTask(@PathVariable Long id, @RequestBody TaskModel model) {
+        Task task = taskService.updateTask(model, id);
+        return mapper.toModel(task);
     }
 
     @DeleteMapping("/{id}")
