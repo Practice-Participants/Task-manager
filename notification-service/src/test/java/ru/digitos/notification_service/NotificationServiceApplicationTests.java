@@ -1,4 +1,4 @@
-package ru.digitos.notification;
+package ru.digitos.notification_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

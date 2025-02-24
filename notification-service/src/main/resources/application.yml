@@ -1,17 +1,9 @@
 spring:
   application:
     name: notification-service
-    datasource:
-      url: jdbc:postgresql://localhost:5432/notification-db
-      username: notification
-      password: notification-pwd
-      driver-class-name: org.postgresql.Driver
   kafka:
     consumer:
       group-id: notification-service
       bootstrap-servers: localhost:9092
 server:
   port: 8085
-  jpa:
-    hibernate:
-      ddl-auto: update

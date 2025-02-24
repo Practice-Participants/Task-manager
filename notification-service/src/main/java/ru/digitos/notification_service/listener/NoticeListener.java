@@ -1,4 +1,4 @@
-package ru.digitos.notification.listener;
+package ru.digitos.notification_service.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

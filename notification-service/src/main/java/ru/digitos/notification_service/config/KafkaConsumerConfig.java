@@ -1,5 +1,4 @@
-package ru.digitos.notification.config;
-
+package ru.digitos.notification_service.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -38,8 +37,8 @@ public class KafkaConsumerConfig {
 
     @Bean
     public KafkaListenerContainerFactory<
-            ConcurrentMessageListenerContainer<String, Object>> factory(
-                    ConsumerFactory<String, Object> consumerFactory){
+                ConcurrentMessageListenerContainer<String, Object>> factory(
+            ConsumerFactory<String, Object> consumerFactory){
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
