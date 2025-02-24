@@ -15,10 +15,10 @@ import java.util.Map;
 
 @Configuration
 public class KafkaConsumerConfig {
-    @Value("${spring.kafka.bootstrap-servers}")
+    //@Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.consumer.group-id}")
+    //@Value("${spring.kafka.consumer.group-id}")
     private String groupID;
 
     public Map<String, Object> consumerConfig(){
@@ -30,12 +30,12 @@ public class KafkaConsumerConfig {
         );
     }
 
-    @Bean
+    //@Bean
     public ConsumerFactory<String, Object> consumerFactory(){
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 
-    @Bean
+    //@Bean
     public KafkaListenerContainerFactory<
                 ConcurrentMessageListenerContainer<String, Object>> factory(
             ConsumerFactory<String, Object> consumerFactory){
