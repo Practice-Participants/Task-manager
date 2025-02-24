@@ -15,11 +15,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto {
+public class TaskDTO {
     private Long reporterID;
     private Long assigneeID;
     private String title;
     private String description;
     private LocalDateTime deadline;
+    private TaskPriority priority;
     private String tag;
 }

@@ -1,8 +1,7 @@
 package domain.service;
 
-import domain.dto.TaskDto;
+import domain.dto.TaskDTO;
 import domain.entity.Task;
-import domain.entity.TaskStatus;
 import domain.exception.NoTaskException;
 import domain.mapper.TaskMapper;
 import domain.model.TaskModel;
@@ -27,14 +26,15 @@ public class TaskService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Transactional
-    public Task creteTask(TaskDto dto) {
+    public Task creteTask(TaskDTO dto) {
         Task task = mapper.toTask(dto);
         taskRepository.save(task);
         log.info("Create task, ID:" + task.getId());
-        kafkaTemplate.send("task-event",String.format("Task created with ID: %s", task.getId()) );
+        kafkaTemplate.send("task-event", String.format("Task created with ID: %s", task.getId()));
         return task;
     }
 
+    @Transactional
     public Task updateTask(TaskModel model, Long id) {
         Task task = taskRepository.findById(id).orElseThrow(NoTaskException::new);
         Task updateTask = mapper.toTask(model);
@@ -47,14 +47,14 @@ public class TaskService {
         updateTask.setStatus(task.getStatus());
 
         log.info("Update task, ID:" + updateTask.getId());
-        kafkaTemplate.send("task-event",String.format("Update task with ID: %s", updateTask.getId()) );
+        kafkaTemplate.send("task-event", String.format("Update task with ID: %s", updateTask.getId()));
 
         return taskRepository.save(updateTask);
     }
 
     public void deleteTask(Long id) {
         log.info("Update task, ID:" + id);
-        kafkaTemplate.send("task-event",String.format("Delete task with ID: %s", id) );
+        kafkaTemplate.send("task-event", String.format("Delete task with ID: %s", id));
 
         taskRepository.deleteById(id);
     }

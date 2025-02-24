@@ -1,6 +1,6 @@
 package domain.controller;
 
-import domain.dto.TaskDto;
+import domain.dto.TaskDTO;
 import domain.entity.Task;
 import domain.mapper.TaskMapper;
 import domain.model.TaskModel;
@@ -19,7 +19,7 @@ public class TaskController {
     private final TaskMapper mapper;
 
     @PostMapping("/create")
-    public TaskDto create(@RequestBody TaskDto dto){
+    public TaskDTO create(@RequestBody TaskDTO dto){
         Task task = taskService.creteTask(dto);
         return mapper.toDto(task);
     }

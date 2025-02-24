@@ -1,8 +1,7 @@
 package domain.mapper;
 
-import domain.dto.TaskDto;
+import domain.dto.TaskDTO;
 import domain.entity.Task;
-import domain.entity.TaskPriority;
 import domain.entity.TaskStatus;
 import domain.model.TaskModel;
 
@@ -12,8 +11,8 @@ import java.time.LocalDateTime;
 
 @Component
 public class TaskMapper {
-    public TaskDto toDto(Task task){
-        return TaskDto.builder()
+    public TaskDTO toDto(Task task){
+        return TaskDTO.builder()
                 .reporterID(task.getReporterID())
                 .assigneeID(task.getAssigneeID())
                 .title(task.getTitle())
@@ -23,7 +22,7 @@ public class TaskMapper {
                 .build();
     }
 
-    public Task toTask(TaskDto dto){
+    public Task toTask(TaskDTO dto){
         return Task.builder()
                 .reporterID(dto.getReporterID())
                 .assigneeID(dto.getAssigneeID())
@@ -33,7 +32,7 @@ public class TaskMapper {
                 .updatedAt(LocalDateTime.now())
                 .deadline(dto.getDeadline())
                 .status(TaskStatus.TO_DO)
-                .priority(TaskPriority.HIGH)// TODO не надо так вставлять вручную
+                .priority(dto.getPriority())
                 .tag(dto.getTag())
                 .build();
     }
@@ -44,8 +43,8 @@ public class TaskMapper {
                 .description(model.getDescription())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .status(TaskStatus.TO_DO)
-                .priority(TaskPriority.LOW)// TODO не надо так вставлять
+                .status(model.getStatus())
+                .priority(model.getPriority())
                 .tag(model.getTag())
                 .build();
     }

@@ -2,7 +2,9 @@ spring:
   application:
     name: domain
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: http://localhost:9092
+    consumer:
+      group-id: task-service
   jpa:
     hibernate:
       ddl-auto: update
