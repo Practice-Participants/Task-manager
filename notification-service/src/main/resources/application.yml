@@ -5,5 +5,17 @@ spring:
     consumer:
       group-id: notification-service
       bootstrap-servers: localhost:9092
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username: notification.service.25
+      password: 2025Notification
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+
 server:
   port: 8085

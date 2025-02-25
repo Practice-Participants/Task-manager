@@ -13,13 +13,13 @@ public class SimpleNoticeManager implements NoticeManager {
     public void setTemplateMessage(SimpleMailMessage templateMessage) {
         this.templateMessage = templateMessage;
     }
-    public void placeOrder(Notice notice) {
+    public void placeNotice(Notice notice) {
         // Проводим бизнес-расчеты...
         // Вызываем взаимодействующие объекты для сохранения заказа...
         /// Создаем безопасную для потока "копию" шаблонного сообщения и настраиваем ее
         SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
         //msg.setTo(notice.getCustomer().getEmailAddress());
-        msg.setTo("test@mail.ru");
+        msg.setTo("xfqdesnik@mail.ru");
         //msg.setText(
         //        "Dear " + notice.getCustomer().getFirstName()
         //                + notice.getCustomer().getLastName()
