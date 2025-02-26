@@ -2,20 +2,20 @@ spring:
   application:
     name: notification-service
   kafka:
+    task-service-topic: task-service
     consumer:
       group-id: notification-service
       bootstrap-servers: localhost:9092
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: notification.service.25
-      password: 2025Notification
-      properties:
-        mail:
-          smtp:
-            auth: true
-            starttls:
-              enable: true
-
+  mail:
+    host: domain.mail.yandex.net
+    port: 587
+    username: admin@digit-os.ru
+    password: 2025Admin
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8085

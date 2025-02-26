@@ -18,16 +18,12 @@ public class EmailController {
     @Autowired
     EmailService emailService;
 
-    @GetMapping(value = "/simple-email/{user-email}")
-    public @ResponseBody ResponseEntity sendSimpleEmail(@PathVariable("user-email") String email) {
-
+    public void sendSimpleEmail(String email) {
         try {
+            //email = "admin@digit-os.ru";
             emailService.sendSimpleEmail(email, "Welcome", "This is a welcome email for your!!");
         } catch (MailException mailException) {
             log.error("Error while sending out email..{}", mailException.getStackTrace());
-            return new ResponseEntity<>("Unable to send email", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>("Please check your inbox", HttpStatus.OK);
+       }
     }
 }

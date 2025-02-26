@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class NoticeListener {
-    @KafkaListener(topics = "notice-events")
+    //@KafkaListener(topics = "notice-events")
+    @KafkaListener(topics = "task-service")
     public void listen(String payload){
         log.info("Recived notice: {}", payload);
     }
