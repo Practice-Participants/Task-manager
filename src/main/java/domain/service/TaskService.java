@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 /**
  * Created by Lorden on 19.02.2025
@@ -23,14 +24,15 @@ import java.time.LocalDateTime;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper mapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, HashMap<String, String>> kafkaTemplate;
 
     @Transactional
     public Task creteTask(TaskDTO dto) {
         Task task = mapper.toTask(dto);
         taskRepository.save(task);
         log.info("Create task, ID:" + task.getId());
-        kafkaTemplate.send("task-event", String.format("Task created with ID: %s", task.getId()));
+        kafkaTemplate.send("task-service", mapper.toMap(task));
+
         return task;
     }
 
@@ -47,14 +49,13 @@ public class TaskService {
         updateTask.setStatus(task.getStatus());
 
         log.info("Update task, ID:" + updateTask.getId());
-        kafkaTemplate.send("task-event", String.format("Update task with ID: %s", updateTask.getId()));
+        kafkaTemplate.send("task-service", mapper.toMap(task));
 
         return taskRepository.save(updateTask);
     }
 
     public void deleteTask(Long id) {
         log.info("Update task, ID:" + id);
-        kafkaTemplate.send("task-event", String.format("Delete task with ID: %s", id));
 
         taskRepository.deleteById(id);
     }

@@ -8,6 +8,7 @@ import domain.model.TaskModel;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 @Component
 public class TaskMapper {
@@ -57,5 +58,13 @@ public class TaskMapper {
                 .priority(task.getPriority())
                 .tag(task.getTag())
                 .build();
+    }
+
+    public HashMap<String, String> toMap(Task task){
+        HashMap<String, String> taskMap = new HashMap<>();
+        taskMap.put("userId", String.valueOf(task.getReporterID()));
+        taskMap.put("title", String.valueOf(task.getTitle()));
+        taskMap.put("status", String.valueOf(task.getStatus()));
+        return taskMap;
     }
 }
