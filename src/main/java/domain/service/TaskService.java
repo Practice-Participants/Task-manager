@@ -18,7 +18,6 @@ import java.util.HashMap;
 /**
  * Created by Lorden on 19.02.2025
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -30,8 +29,11 @@ public class TaskService {
     public Task creteTask(TaskDTO dto) {
         Task task = mapper.toTask(dto);
         taskRepository.save(task);
-        log.info("Create task, ID:" + task.getId());
-        kafkaTemplate.send("task-service", mapper.toMap(task));
+
+        HashMap<String, String> taskMap = mapper.toMap(task);
+        taskMap.put("event", "TASK_CREATED");
+
+        kafkaTemplate.send("task-service", taskMap);
 
         return task;
     }
@@ -48,20 +50,29 @@ public class TaskService {
         updateTask.setDeadline(task.getDeadline());
         updateTask.setStatus(task.getStatus());
 
-        log.info("Update task, ID:" + updateTask.getId());
-        kafkaTemplate.send("task-service", mapper.toMap(task));
+        HashMap<String, String> taskMap = mapper.toMap(task);
+        taskMap.put("event", "TASK_UPDATE");
+
+        kafkaTemplate.send("task-service", taskMap);
 
         return taskRepository.save(updateTask);
     }
 
     public void deleteTask(Long id) {
-        log.info("Update task, ID:" + id);
+        HashMap<String, String> taskMap = new HashMap<>();
+        taskMap.put("event", "TASK_DELITE");
+
+        kafkaTemplate.send("task-service", taskMap);
 
         taskRepository.deleteById(id);
     }
 
     public Task findById(Long id) {
-        return taskRepository.findById(id).orElseThrow(NoTaskException::new);
+        Task task = taskRepository.findById(id).orElseThrow(NoTaskException::new);
+        HashMap<String, String> taskMap = mapper.toMap(task);
+        taskMap.put("event", "TASK_READ");
+
+        return task;
     }
 
 }

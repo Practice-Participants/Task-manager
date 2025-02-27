@@ -19,7 +19,5 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 server:
-  port: 8085
+  port: 8088
 
-topic:
-  name: task-service-topics
