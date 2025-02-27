@@ -21,7 +21,7 @@ public void consume(ConsumerRecord<String, String> record) {
     try {
         Map<String, String> taskData = objectMapper.readValue(record.value(), Map.class);
 
-        String eventType = taskData.get("eventType");
+        String eventType = taskData.get("event");
         String userId = taskData.get("userId");
         String title = taskData.get("title");
         String status = taskData.get("status");
