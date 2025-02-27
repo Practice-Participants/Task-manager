@@ -72,6 +72,8 @@ public class TaskService {
         HashMap<String, String> taskMap = mapper.toMap(task);
         taskMap.put("event", "TASK_READ");
 
+        kafkaTemplate.send("task-service", taskMap);
+
         return task;
     }
 
