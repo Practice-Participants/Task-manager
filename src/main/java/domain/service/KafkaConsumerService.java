@@ -31,13 +31,13 @@ public void consume(ConsumerRecord<String, String> record) {
             case "TASK_CREATED":
                 logMessage = String.format("Task created by user %s: '%s' with status %s", userId, title, status);
                 break;
-            case "TASK_UPDATED":
+            case "TTASK_UPDATE":
                 logMessage = String.format("Task updated by user %s: '%s' now has status %s", userId, title, status);
                 break;
-            case "TASK_DELETED":
+            case "TASK_DELITE":
                 logMessage = String.format("Task deleted by user %s: '%s' now has status %s", userId, title, status);
                 break;
-            case "TASK_VIEWED":
+            case "TASK_READ":
                 logMessage = String.format("Task viewed by user %s: '%s' with status %s", userId, title, status);
                 break;
             default:
