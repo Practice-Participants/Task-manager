@@ -1,0 +1,5 @@
+domain\controller\LogController.class
+domain\service\KafkaConsumerService.class
+domain\AuditLogApplication.class
+domain\repository\LogRepository.class
+domain\model\LogEntry.class
