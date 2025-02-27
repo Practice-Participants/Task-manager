@@ -1,13 +1,12 @@
 package domain.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.model.LogEntry;
 import domain.repository.LogRepository;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-
+import java.util.Map;
 @Service
 public class KafkaConsumerService {
     private final LogRepository logRepository;
@@ -17,19 +16,43 @@ public class KafkaConsumerService {
         this.logRepository = logRepository;
     }
 
-    @KafkaListener(topics = "audit-log-topic", groupId = "audit-log-group")
-    public void consume(ConsumerRecord<String, String> record) {
-        try {
-            JsonNode jsonNode = objectMapper.readTree(record.value());
-            String eventType = jsonNode.get("eventType").asText();
-            String eventData = jsonNode.get("eventData").toString();
+@KafkaListener(topics = "task-service", groupId = "audit-log-group")
+public void consume(ConsumerRecord<String, String> record) {
+    try {
+        Map<String, String> taskData = objectMapper.readValue(record.value(), Map.class);
 
-            LogEntry logEntry = new LogEntry(eventType, eventData);
-            logRepository.save(logEntry);
+        String eventType = taskData.get("eventType");
+        String userId = taskData.get("userId");
+        String title = taskData.get("title");
+        String status = taskData.get("status");
 
-            System.out.println("Received and saved: " + record.value());
-        } catch (Exception e) {
-            System.err.println("Error processing Kafka message: " + e.getMessage());
+        String logMessage;
+        switch (eventType) {
+            case "TASK_CREATED":
+                logMessage = String.format("Task created by user %s: '%s' with status %s", userId, title, status);
+                break;
+            case "TASK_UPDATED":
+                logMessage = String.format("Task updated by user %s: '%s' now has status %s", userId, title, status);
+                break;
+            case "TASK_DELETED":
+                logMessage = String.format("Task deleted by user %s: '%s' now has status %s", userId, title, status);
+                break;
+            case "TASK_VIEWED":
+                logMessage = String.format("Task viewed by user %s: '%s' with status %s", userId, title, status);
+                break;
+            default:
+                logMessage = "Unknown task event";
         }
+
+        LogEntry logEntry = new LogEntry(eventType, logMessage);
+        logRepository.save(logEntry);
+
+        System.out.println("Logged: " + logMessage);
+    } catch (Exception e) {
+        System.err.println("Error processing Kafka message: " + e.getMessage());
+        e.printStackTrace();
     }
+}
+
+
 }
