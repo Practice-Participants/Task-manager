@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: notification-service
+  kafka:
+    task-service-topic: task-service
+    consumer:
+      group-id: notification-service
+      bootstrap-servers: localhost:9092
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: a40922420@gmail.com
+    password: wqxnttjqidiunzgz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  port: 8086
+
+jpa:
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification-db
+    username: notification
+    password: notification-pwd
+    driver-class-name: org.postgresql.Driver

@@ -1,0 +1,5 @@
+C:\Users\minfr\IdeaProjects\Task-manager\src\main\java\domain\AuditLogApplication.java
+C:\Users\minfr\IdeaProjects\Task-manager\src\main\java\domain\controller\LogController.java
+C:\Users\minfr\IdeaProjects\Task-manager\src\main\java\domain\model\LogEntry.java
+C:\Users\minfr\IdeaProjects\Task-manager\src\main\java\domain\repository\LogRepository.java
+C:\Users\minfr\IdeaProjects\Task-manager\src\main\java\domain\service\KafkaConsumerService.java
